@@ -57,5 +57,9 @@
   "dependencies": {
     "archiver": "^7.0.1",
     "fs-extra": "^11.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yq612/env-based-auto-builder.git"
   }
 }
