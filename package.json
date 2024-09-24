@@ -2,7 +2,7 @@
   "name": "env-based-auto-builder",
   "displayName": "Env-Based Auto Builder",
   "description": "Automatically build and package your project based on environment variable files.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "yq612",
   "engines": {
     "vscode": "^1.93.0"
