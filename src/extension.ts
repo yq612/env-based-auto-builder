@@ -56,8 +56,8 @@ async function buildForAllEnvironments() {
             }, async () => {
                 // Execute your build task
                 await runCommand(command, args, projectRoot);
-                const distFolder = path.join(projectRoot, 'dist');  // 源 dist 目录
-                const zipFolder = path.join(projectRoot, targetZipFolderName, `${envName}.zip`);  // 生成的 ZIP 文件路径
+                const distFolder = path.join(projectRoot, 'dist'); 
+                const zipFolder = path.join(projectRoot, targetZipFolderName, `${envName}.zip`); 
 
                 // Make sure the target zip folder exists
                 await fse.ensureDir(path.join(projectRoot, targetZipFolderName));
