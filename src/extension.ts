@@ -12,6 +12,16 @@ async function selectScript(scripts: Record<string, string>): Promise<string | u
     });
 }
 
+// Select target env (multi-select)
+async function selectTargetEnv(envArr: string[]): Promise<string[] | undefined> {
+    const handleEnvArr = envArr
+        .filter(file => file.startsWith('.env'))
+        .map(file => file === '.env' ? 'default' : file.replace('.env.', ''));
+    return await vscode.window.showQuickPick(handleEnvArr, {
+        placeHolder: 'Select one or more env files to run',
+        canPickMany: true // Enable multi-select
+    });
+}
 async function buildForAllEnvironments() {
 
     if (!isWorkspaceFolderExists()) {
@@ -34,7 +44,13 @@ async function buildForAllEnvironments() {
         return;
     }
 
-    for (const envFile of envFiles) {
+    const targetEnvFiles = await selectTargetEnv(envFiles);
+    if (!targetEnvFiles) {
+        vscode.window.showErrorMessage('No env selected.');
+        return;
+    }
+
+    for (const envFile of targetEnvFiles) {
         const envName = path.basename(envFile).replace('.env.', '');
         const scriptValue = scripts[selectedScript];
 
@@ -56,8 +72,8 @@ async function buildForAllEnvironments() {
             }, async () => {
                 // Execute your build task
                 await runCommand(command, args, projectRoot);
-                const distFolder = path.join(projectRoot, 'dist'); 
-                const zipFolder = path.join(projectRoot, targetZipFolderName, `${envName}.zip`); 
+                const distFolder = path.join(projectRoot, 'dist');
+                const zipFolder = path.join(projectRoot, targetZipFolderName, `${envName}.zip`);
 
                 // Make sure the target zip folder exists
                 await fse.ensureDir(path.join(projectRoot, targetZipFolderName));
